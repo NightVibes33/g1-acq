@@ -226,7 +226,7 @@
     path = path.replace(/\/+$/, "") || "/";
     if (path === "/" || path === "/ai" || path === "/plans") return path;
     if (/^\/_\/[^?#]+\/data\/batchexecute$/.test(path)) return "/_/…/data/batchexecute";
-    return "[其他 one.google.com 路径]";
+    return "[Other one.google.com paths]";
   }
 
   function responseStatus(bodyType, candidateCount, addedCount, omittedCount) {
@@ -241,7 +241,7 @@
     if (typeof row.at !== "string" || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(row.at) ||
         !isFinite(Date.parse(row.at)) || new Date(row.at).toISOString() !== row.at) return null;
     if (row.path !== "/" && row.path !== "/ai" && row.path !== "/plans" &&
-        row.path !== "/_/…/data/batchexecute" && row.path !== "[其他 one.google.com 路径]") return null;
+        row.path !== "/_/…/data/batchexecute" && row.path !== "[Other one.google.com paths]" && row.path !== "[\u5176\u4ed6 one.google.com \u8def\u5f84]") return null;
     if (row.bodyType !== "text" && row.bodyType !== "non-text") return null;
 
     function counter(value, maximum) {
@@ -258,7 +258,7 @@
     if (row.status !== responseStatus(row.bodyType, candidateCount, addedCount, omittedCount)) return null;
     return {
       at: row.at,
-      path: row.path,
+      path: row.path === "[\u5176\u4ed6 one.google.com \u8def\u5f84]" ? "[Other one.google.com paths]" : row.path,
       bodyType: row.bodyType,
       status: row.status,
       candidateCount: candidateCount,
